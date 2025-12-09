@@ -1,0 +1,152 @@
+body {
+    font-family: 'Cairo', sans-serif;
+}
+#toast-container>.toast-success {
+    background-color: #15964f;
+}
+#toast-container>.toast-error {
+    background-color: #f00;
+}
+#map { height: 500px; width: 100%; }
+.activeDriver,.disActive{
+    padding: 4px 3px;
+  color: #eee
+}
+.activeDriver{
+        background: #00ff28;
+}
+.disActive{
+    background: #f00;
+
+}
+.successIcon{
+    background-color: #46d811;
+  color: #f4eeee !important;
+  border-radius: 28px;
+  padding: 3px 3px 3px 6px;
+}
+.errooIcon
+{
+    background-color: #f21212;
+    color: #f4eeee;
+    border-radius: 28px;
+    padding: 3px 3px 3px 6px;
+
+}
+
+.login_form{
+    direction: rtl;
+    text-align: right;
+
+}
+.app-brand-text.demo {
+    font-size: 1.250rem;
+    }
+    .card-header{
+        border: 1px solid;
+        padding: 10px;
+              background:linear-gradient(60deg,#253b79d9,#b7e147);
+
+          margin-bottom: 10px;
+    }
+    .card-tile {
+        color: #ccc;
+        font-weight: bold   ;
+    }
+
+    .page_title{
+        font-size: 1.2em;
+  font-weight: 500;
+  color: #fff;
+  padding:34px 20px 34px 5px;
+  text-align: center;
+  background:linear-gradient(60deg,#253b79d9,#b7e147);
+  border-top-left-radius: 20px;
+  border-top-right-radius: 20px;
+    }
+    .switch{
+      background: none;
+    }
+    .img_div{
+      margin: 10px 0;
+    }
+    .img_div img{
+      width: 100%;
+      height:110px;
+    }
+    .text-truncate {
+        display: inline-block;      /* لجعل width يعمل داخل span */
+        max-width: 200px;           /* أو أي عرض مناسب حسب الجدول */
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        vertical-align: middle;
+      }
+
+      .btn_back{
+        direction: ltr;
+      margin-top: 25px;
+      }
+          #customerTable tbody{
+        box-sizing: border-box;
+    }
+    #customerTable tr th{
+        padding-top: 12px;
+        padding-bottom: 12px;
+        background: linear-gradient(60deg,#253b79,#b7e147);
+        color: white;
+        width: 50%;
+        border: 1px solid #ddd;
+    }
+    #customerTable tr td{
+        border: 1px solid #ddd;
+        padding: 8px;
+    }
+    .btn-action,.btn-action:hover,.btn-action:active,.btn-action:focus-visible{
+        background: #4a1bb3;
+        color: #eee;
+    }
+
+
+:dir(rtl) .menu-item.active > .menu-link:not(.menu-toggle) {
+  background: linear-gradient(-270deg, rgb(35, 57, 119) 0%, #b7e147 100%) !important;
+
+}
+.btn-primary {
+  --bs-btn-bg: #243a78 !important;
+  --bs-btn-border-color: #243a78 !important;
+  --bs-btn-hover-bg: color-mix(in sRGB, #000 10%, #243a78 !important);
+  --bs-btn-hover-border-color: var(--bs-btn-hover-bg);
+  --bs-btn-active-color: var(--bs-primary-contrast);
+  --bs-btn-active-bg: color-mix(in sRGB, #000 10%, #243a78 !important);
+  --bs-btn-active-border-color: var(--bs-btn-active-bg);
+  --bs-btn-box-shadow-rgb: var(--bs-primary-rgb);
+  --bs-btn-focus-shadow-rgb: var(--bs-primary-rgb);
+  --bs-btn-active-shadow-rgb: var(--bs-primary-rgb);
+  --bs-btn-disabled-color: var(--bs-primary-contrast);
+  --bs-btn-disabled-bg: #243a78 !important;
+  --bs-btn-disabled-border-color: #243a78 !important;
+  --bs-btn-group-border-color: color-mix(in sRGB, #000 10%, #243a78 !important);
+  --bs-btn-waves-effect-color: var(--bs-primary-rgb);
+}
+
+.btn:hover {
+  color: #243a78;
+  background: #add649;
+}
+.subTitle{
+     display:block;
+  font-size: 33px;
+  color: #eee;
+  font-weight: bold;
+}
+
+.logo{
+    height: 86px;
+  width: 80px;
+  margin-top: 23px;
+}
+.totalProfit{
+  font-size: 16px;
+  font-weight: bold;
+}

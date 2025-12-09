@@ -1,0 +1,24 @@
+includes:
+    - vendor/larastan/larastan/extension.neon
+
+parameters:
+    paths:
+        - app
+
+    # level
+    level: 5
+
+    tmpDir: build/phpstan
+
+    # تجاهل vendor، storage
+    excludePaths:
+        - vendor
+        - storage
+
+    # قواعد صارمة لكنها متوافقة
+    checkExplicitMixed: true
+    checkMissingVarTagTypehint: true
+    checkUninitializedProperties: true
+
+    # تجاهل false-positives الخاصة بـ Laravel
+    ignoreErrors: []
