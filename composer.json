@@ -10,11 +10,12 @@
     "license": "MIT",
     "require": {
         "php": "^8.2",
+        "hesto/multi-auth": "^2.0",
         "laravel/framework": "^12.0",
         "laravel/passport": "^13.4",
+        "laravel/reverb": "^1.6",
         "laravel/tinker": "^2.10.1",
         "laravel/ui": "^4.6",
-        "hesto/multi-auth": "^2.0",
         "stichoza/google-translate-php": "^5.3"
     },
     "require-dev": {
