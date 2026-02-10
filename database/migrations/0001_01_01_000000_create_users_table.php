@@ -18,10 +18,11 @@ return new class extends Migration
             $table->string('email')->nullable();
             $table->string('phone')->nullable();
             $table->string('image')->nullable();
-            $table->string('idImage')->nullable();
+            $table->string('device_id')->nullable();
+            $table->enum('device_type',['android','huawei','iPhone'])->default('android');
             $table->foreignId('user_type_id')->default(1)->constrained();
             $table->boolean('isActive')->default(false);
-            $table->timestamp('email_verified_at')->nullable();
+            $table->timestamp('phone_verified_at')->nullable();
             $table->string('password')->nullable();
             $table->text('fcmToken')->nullable();
             $table->text('access_token')->nullable();

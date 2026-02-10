@@ -16,10 +16,7 @@ class userTypeSeeder extends Seeder
     {
         DB::table('user_types')->insert([
             [
-                'name' => 'ادمن',
-            ],
-            [
-                'name' => 'مستخدم',
+                'name' => 'user',
             ],
         ]);
     }

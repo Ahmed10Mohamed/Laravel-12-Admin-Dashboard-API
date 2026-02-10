@@ -7,7 +7,7 @@
             <aside id="layout-menu" class="layout-menu menu-vertical menu bg-menu-theme">
                 <div class="app-brand demo">
                     <a href="{{ route('Admin-Dashboard') }}" class="app-brand-link">
-                        <img src="{{ asset('logo.png') }}" class="logo" width="100" heigh="80">
+                        <img src="{{ asset('logo.png') }}" class="logo" >
                     </a>
 
                     <a href="javascript:void(0);" class="layout-menu-toggle menu-link text-large ms-auto">
@@ -47,47 +47,23 @@
 
                             <li class="menu-item @if (Request::is('Dashboard-Admin/About-aboutUs')) active @endif">
                                 <a href="{{ url('Dashboard-Admin/About-aboutUs') }}" class="menu-link">
-                                    <div data-i18n="عن النادي">عن النادي</div>
+                                    <div data-i18n="{{ translate('aboutDrivo') }}">{{ translate('aboutDrivo') }}</div>
                                 </a>
                             </li>
 
                             <li class="menu-item @if (Request::is('Dashboard-Admin/About-Policy')) active @endif">
                                 <a href="{{ url('Dashboard-Admin/About-Policy') }}" class="menu-link">
-                                    <div data-i18n="سياسة الخصوصية">سياسة الخصوصية</div>
+                                    <div data-i18n="{{ translate('Policy') }}">{{ translate('Policy') }}</div>
                                 </a>
                             </li>
 
 
                             <li class="menu-item @if (Request::is('Dashboard-Admin/About-TermsUse')) active @endif">
                                 <a href="{{ url('Dashboard-Admin/About-TermsUse') }}" class="menu-link">
-                                    <div data-i18n="شروط الاستخدام">شروط الاستخدام</div>
+                                    <div data-i18n="{{ translate('TermsUse') }}">{{ translate('TermsUse') }}</div>
                                 </a>
                             </li>
 
-                            <li class="menu-item @if (Request::is('Dashboard-Admin/About-vision')) active @endif">
-                                <a href="{{ url('Dashboard-Admin/About-vision') }}" class="menu-link">
-                                    <div data-i18n="رؤيتنا">رؤيتنا</div>
-                                </a>
-                            </li>
-
-                            <li class="menu-item @if (Request::is('Dashboard-Admin/About-mission')) active @endif">
-                                <a href="{{ url('Dashboard-Admin/About-mission') }}" class="menu-link">
-                                    <div data-i18n="مهمتنا">مهمتنا</div>
-                                </a>
-                            </li>
-                            <li class="menu-item @if (Request::is('Dashboard-Admin/About-Footer')) active @endif">
-                                <a href="{{ url('Dashboard-Admin/About-Footer') }}" class="menu-link">
-                                    <div data-i18n="Footer">Footer</div>
-                                </a>
-                            </li>
-
-
-
-                            <li class="menu-item @if (Request::is('Dashboard-Admin/About-contactUs')) active @endif">
-                                <a href="{{ url('Dashboard-Admin/About-contactUs') }}" class="menu-link">
-                                    <div data-i18n="اتصل بنا">اتصل بنا</div>
-                                </a>
-                            </li>
 
                         </ul>
                     </li>
@@ -96,23 +72,23 @@
 
 
                     <li class="menu-header small">
-                        <span class="menu-header-text" data-i18n="الإعدادات">الإعدادات</span>
+                        <span class="menu-header-text" data-i18n="{{ translate('Setting') }}">{{ translate('Setting') }}</span>
                     </li>
                     <li class="menu-item @if (checkRoute('Profile') || checkRoute('Profile.Password')) active open @endif ">
                         <a href="javascript:void(0);" class="menu-link menu-toggle">
                             <i class="menu-icon tf-icons ti tabler-settings"></i>
-                            <div data-i18n="البيانات الشخصية">البيانات الشخصية</div>
+                            <div data-i18n="{{ translate('Profile Setting') }}">{{ translate('Profile Setting') }}</div>
                         </a>
 
                         <ul class="menu-sub">
                             <li class="menu-item @if (checkRoute('Profile')) active @endif">
                                 <a href="{{ route('Profile') }}" class="menu-link">
-                                    <div data-i18n="الملف الشخصي">الملف الشخصي</div>
+                                    <div data-i18n="{{ translate('user profile') }}">{{ translate('user profile') }}</div>
                                 </a>
                             </li>
                             <li class="menu-item @if (checkRoute('Profile.Password')) active @endif">
                                 <a href="{{ route('Profile.Password') }}" class="menu-link">
-                                    <div data-i18n="كلمة المرور">كلمة المرور</div>
+                                    <div data-i18n="{{ translate('Password') }}">{{ translate('Password') }}</div>
                                 </a>
                             </li>
                         </ul>

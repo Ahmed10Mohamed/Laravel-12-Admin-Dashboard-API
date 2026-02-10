@@ -14,13 +14,13 @@
       name="viewport"
       content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
 
-    <title>نادي بووست الرياضي</title>
+    <title>{{ translate('Drivo') }}</title>
 
-    <meta name="description" content="نادي بووست الرياضي" />
+    <meta name="description" content="{{ translate('Drivo') }}" />
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <!-- Favicon -->
-    <link rel="icon" type="image/x-icon" href="{{asset('adminFiles/img/favicon/favicon.ico')}}" />
+    <link rel="icon" type="image/x-icon" href="{{asset('favicon.png')}}" />
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -81,24 +81,24 @@
           <!-- Login -->
           <div class="card login_form">
             <div class="card-body">
-              <h4 class="mb-1">نادي بووست الرياضي 👋</h4>
+              <h4 class="mb-1">{{ translate('Drivo') }} 👋</h4>
 
               <form action="{{ route('admin.login') }}" class="mb-6 " method="post">
                     {{csrf_field()}}
 
                 <div class="mb-6 form-control-validation">
-                  <label for="email" class="form-label">اسم المستخدم</label>
+                  <label for="email" class="form-label">{{ translate('E-Mail or userName') }}</label>
                   <input
                     type="text"
                     class="form-control"
                     id="email"
                     name="email"
                     value="{{old('email')}}"
-                    placeholder="من فضلك قم بادخال اسم المستخدم"
+                    placeholder="{{ translate('Please enter yout E-Mail Or userName') }}"
                     autofocus />
                 </div>
                 <div class="mb-6 form-password-toggle form-control-validation">
-                  <label class="form-label" for="password">كلمة المرور</label>
+                  <label class="form-label" for="password">{{ translate('Password') }}</label>
                   <div class="input-group input-group-merge">
                     <input
                       type="password"
@@ -114,13 +114,13 @@
                   <div class="d-flex justify-content-between">
                     <div class="form-check mb-0 ms-2">
                       <input class="form-check-input" type="checkbox" name="rememberMe" value="1" id="remember-me" />
-                      <label class="form-check-label"   for="remember-me"> تذكرنى </label>
+                      <label class="form-check-label"   for="remember-me"> {{ translate('remember me') }} </label>
                     </div>
 
                   </div>
                 </div>
                 <div class="mb-6">
-                  <button class="btn btn-primary d-grid w-100" type="submit">دخول</button>
+                  <button class="btn btn-primary d-grid w-100" type="submit">{{ translate('Login') }}</button>
                 </div>
               </form>
 
