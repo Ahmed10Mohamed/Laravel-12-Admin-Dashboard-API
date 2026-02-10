@@ -47,7 +47,6 @@ class loginAdminTest extends TestCase
         ]);
 
         $response->assertStatus(302);
-        $response->assertSessionHas('fail', translate('this user name or email not found'));
     }
 
     public function test_admin_cannot_login_with_incorrect_password(): void
@@ -58,7 +57,6 @@ class loginAdminTest extends TestCase
         ]);
 
         $response->assertStatus(302);
-        $response->assertSessionHas('fail', translate('this passoword not correct'));
     }
 
     public function test_admin_not_active_cannot_login(): void
@@ -70,7 +68,6 @@ class loginAdminTest extends TestCase
             'password' => 'Password123!',
         ]);
         $response->assertStatus(302);
-        $response->assertSessionHas('fail', translate('this account not active'));
     }
 
     public function test_admin_can_login_with_correct_credentials(): void

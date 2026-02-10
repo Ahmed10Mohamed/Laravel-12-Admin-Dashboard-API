@@ -3,7 +3,6 @@
 namespace Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 
@@ -24,7 +23,7 @@ class AdminFactory extends Factory
      */
     public function definition(): array
     {
-        
+
         return [
             'userName' => fake()->unique()->name(),
             'fullName' => fake()->name(),
@@ -32,7 +31,7 @@ class AdminFactory extends Factory
             'email' => fake()->unique()->safeEmail(),
             'password' => static::$password ??= Hash::make('Password123!'),
             'remember_token' => Str::random(10),
-           'isActive' => true,
+            'isActive' => true,
 
         ];
     }
