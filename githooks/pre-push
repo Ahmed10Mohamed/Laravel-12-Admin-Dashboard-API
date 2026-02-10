@@ -18,7 +18,7 @@ CHANGED=$(git diff --name-only --diff-filter=ACMRT $BASE \
 | grep -Ev "^(vendor/|config/|storage/framework/)")
 
 if [ -z "$CHANGED" ]; then
-  echo "No PHP changes — skipping static checks"
+  echo "No PHP changes — skipping PHPStan & Pint checks"
 else
   echo "▶ Changed PHP files:"
   echo "$CHANGED"
@@ -56,13 +56,16 @@ if [ -n "$PENDING_MIGRATIONS" ]; then
 fi
 
 echo "--------------------------------------------------"
-echo "▶ Running PHPUnit (Unit & Feature tests only)"
+echo "▶ Running PHPUnit (Unit & Feature tests only, excluding Dusk)"
+
+# Detect changed test files
 TEST_CHANGED=$(git diff --name-only --diff-filter=ACMRT $BASE \
 | grep "^tests/.*Test\.php$")
 
 if [ -n "$TEST_CHANGED" ]; then
-  echo "▶ Running only changed tests"
-  vendor/bin/phpunit --stop-on-failure $TEST_CHANGED --colors=always
+  echo "▶ Running only changed tests:"
+  echo "$TEST_CHANGED"
+  vendor/bin/phpunit --stop-on-failure $TEST_CHANGED --exclude-group=dusk --colors=always
 else
   echo "▶ Running all Unit + Feature tests (excluding Dusk)"
   vendor/bin/phpunit --stop-on-failure --exclude-group=dusk --colors=always
