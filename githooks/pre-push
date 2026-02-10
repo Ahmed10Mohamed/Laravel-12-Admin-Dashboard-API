@@ -2,7 +2,6 @@
 echo "==== Ultra-Optimized Laravel Pre-Push Pipeline with Timings ===="
 
 start_total=$(date +%s)
-
 BRANCH=$(git rev-parse --abbrev-ref HEAD)
 
 # -------- Detect base for diff --------
@@ -17,10 +16,10 @@ fi
 end=$(date +%s)
 echo "⏱ Diff base detection: $((end - start))s"
 
-# -------- Changed files only (skip vendor/config/storage) --------
+# -------- Changed files only (skip vendor/config/storage and Browser tests) --------
 start=$(date +%s)
 CHANGED=$(git diff --name-only --diff-filter=ACMRT $BASE \
-| grep -Ev "^(vendor/|config/|storage/framework/)")
+| grep -Ev "^(vendor/|config/|storage/framework/|tests/Browser/)")
 end=$(date +%s)
 echo "⏱ Changed files detection: $((end - start))s"
 
@@ -87,7 +86,7 @@ echo "▶ Running PHPUnit (Unit & Feature tests only, excluding Dusk)"
 TEST_CHANGED=$(echo "$CHANGED" | grep "^tests/.*Test\.php$" || true)
 
 if [ -n "$TEST_CHANGED" ]; then
-  echo "▶ Running only changed tests:"
+  echo "▶ Running only changed tests (excluding Browser/Dusk):"
   echo "$TEST_CHANGED"
   vendor/bin/phpunit --stop-on-failure $TEST_CHANGED --exclude-group=dusk --colors=always
 else

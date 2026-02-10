@@ -3,12 +3,14 @@
 namespace Tests\Browser;
 
 use App\Models\Admin;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Laravel\Dusk\Browser;
 use Tests\DuskTestCase;
-use Illuminate\Foundation\Testing\RefreshDatabase;
+
 class LoginTest extends DuskTestCase
 {
-        use RefreshDatabase;
+    use RefreshDatabase;
+
     protected $admin;
 
     protected function setUp(): void
