@@ -1,5 +1,5 @@
 #!/bin/sh
-echo "==== Ultra-Optimized Laravel Pre-Push Pipeline with Timings ===="
+echo "==== Ultra-Optimized Laravel Pre-Push Pipeline for Windows (Ignore Dusk) ===="
 
 start_total=$(date +%s)
 BRANCH=$(git rev-parse --abbrev-ref HEAD)
