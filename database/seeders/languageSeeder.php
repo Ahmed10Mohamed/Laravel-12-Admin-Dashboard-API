@@ -16,13 +16,13 @@ class languageSeeder extends Seeder
     {
         DB::table('languages')->insert([
             [
-                'name'   => 'English',
-                'locale' => 'en'
+                'name' => 'English',
+                'locale' => 'en',
             ],
-             [
-                'name'   => 'عربى',
-                'locale' => 'ar'
-            ]
+            [
+                'name' => 'عربى',
+                'locale' => 'ar',
+            ],
         ]);
     }
 }

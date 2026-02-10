@@ -4,7 +4,6 @@ namespace Tests\Feature\Admin\Auth;
 
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Support\Facades\Auth;
 use Tests\TestCase;
 
@@ -12,9 +11,9 @@ class logoutAdminTest extends TestCase
 {
     use RefreshDatabase;
 
-      protected $user;
+    protected $user;
 
-     protected function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -32,6 +31,7 @@ class logoutAdminTest extends TestCase
         // check redirection to login page
         $response->assertRedirect(route('login'));
     }
+
     public function test_admin_can_logout_success(): void
     {
         // connect as admin user
@@ -44,14 +44,13 @@ class logoutAdminTest extends TestCase
         $response = $this->get(route('admin_logout'));
 
         // check response status
-            $response->assertStatus(302);
+        $response->assertStatus(302);
 
-            // check redirection to login page
+        // check redirection to login page
         $response->assertRedirect(route('login'));
-            $this->assertFalse(Auth::guard('admin')->check());
+        $this->assertFalse(Auth::guard('admin')->check());
 
         // check that the admin user is no longer authenticated
         $this->assertGuest('admin');
     }
-             
 }

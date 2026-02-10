@@ -19,26 +19,25 @@ class LoginTest extends DuskTestCase
         ]);
     }
 
-  public function test_user_can_login()
-{
-    $user = $this->user;
+    public function test_user_can_login()
+    {
+        $user = $this->user;
 
-    $this->browse(function (Browser $browser) use ($user) {
+        $this->browse(function (Browser $browser) use ($user) {
 
-        $browser->visit(route('login'))
-            ->waitForText('نادي بووست الرياضي', 15)
+            $browser->visit(route('login'))
+                ->waitForText('احمد راغب', 15)
 
-            ->typeSlowly('email', $user->email)
-            ->type('password', 'Password123!')
+                ->typeSlowly('email', $user->email)
+                ->type('password', 'Password123!')
 
-            // Use button[type=submit] instead of dusk selector
-            ->click('button[type=submit]')
+                // Use button[type=submit] instead of dusk selector
+                ->click('button[type=submit]')
 
-            // Allow redirect time
-            ->waitForText('© 2025', 20)
+                // Allow redirect time
+                ->waitForText('© 2025', 20)
 
-            ->assertSee($user->userName);
-    });
-}
-
+                ->assertSee($user->userName);
+        });
+    }
 }
