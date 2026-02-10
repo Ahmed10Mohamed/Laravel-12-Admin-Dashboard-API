@@ -1,59 +1,97 @@
 <?php
 
 namespace App\Repository\Admin;
+
 use App\Interfaces\ImageVideoUpload;
 use App\Models\AboutSection;
-use App\Models\Admin;
-use App\Models\Blog;
-use App\Models\Message;
-use App\Models\PostImage;
+use App\Models\aboutSectionTranslation;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Pagination\LengthAwarePaginator;
-use Illuminate\Support\Collection;
-class aboutSectionRepo
+use Illuminate\View\View;
+
+class AboutSectionRepo
 {
     private ImageVideoUpload $ImageUpload;
+
     public function __construct(ImageVideoUpload $ImageUpload)
     {
         $this->ImageUpload = $ImageUpload;
     }
 
-  
-
-    public function show($position)
+    /**
+     * Edit About Section by position
+     */
+    public function edit(string $position): View
     {
-        $class = $position;
-        $data = AboutSection::firstOrCreate(['position' => $position]);
-        return view('admin-panel.pages.aboutsection.index',compact('class', 'data'));
+        $data = AboutSection::with('translations:id,about_section_id,title,description,locale')
+            ->firstOrCreate(['position' => $position]);
+
+        $translations = $data->translations->keyBy('locale');
+
+        return view('admin-panel.pages.about-sections.edit', compact('data', 'translations'));
     }
-  
-  
-    public function update($request)
+
+    /**
+     * Update About Section
+     *
+     * @param  Request  $request
+     */
+    public function update($request): JsonResponse
     {
+        $data_req = $request->only([
+            'position',
+            'linkVideo',
+        ]);
 
-        $data_req = $request->except('_token','image');
+        $data = AboutSection::firstOrCreate([
+            'position' => $request->input('position'),
+        ]);
         DB::beginTransaction();
+        try {
+            // Handle image
+            if ($request->hasFile('image')) {
+                $data_req['image'] = $this->ImageUpload->UpdateImageSingleWithOutLogo(
+                    $request->file('image'),
+                    'AboutSection',
+                    $data->image
+                );
+            }
 
-       try {
-           $section = AboutSection::firstOrCreate(['position' => $request->position]);
-             if($request->hasFile('image')){
+            // Update main model
+            $data->update($data_req);
 
-                 $data_req['image'] = $this->ImageUpload->UpdateImageSingleWithOutLogo($request->hasFile('image'),'AboutSection',image_data: $section->image);
+            // Update translations safely
+            $titles = $request->input('title');
+            $descriptions = $request->input('description');
+
+            // تأكد إنهم arrays قبل foreach
+            if (is_array($titles) && is_array($descriptions)) {
+                foreach ($titles as $locale => $title) {
+                    AboutSectionTranslation::updateOrCreate(
+                        ['about_section_id' => $data->id, 'locale' => $locale],
+                        [
+                            'title' => $title,
+                            'description' => $descriptions[$locale] ?? null,
+                        ]
+                    );
                 }
-                $section->update($data_req);
+            }
+
             DB::commit();
-                return redirect()->back()->with('success','تم التعديل بنجاح');
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Updated successfully',
+            ]);
         } catch (\Exception $e) {
             DB::rollback();
-            return redirect()->back()->with('fail',$e->getMessage());
 
+            return response()->json([
+                'success' => false,
+                'message' => 'Something went wrong',
+                'error' => config('app.debug') ? $e->getMessage() : null,
+            ], 500);
         }
-
-
-
     }
-
-
-
 }

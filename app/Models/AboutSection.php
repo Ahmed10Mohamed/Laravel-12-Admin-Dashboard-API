@@ -2,26 +2,27 @@
 
 namespace App\Models;
 
+use Astrotomic\Translatable\Translatable;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class AboutSection extends Model
 {
-    protected $fillable = [
-        'ar_title',
-        'en_title',
-        'image',
-        'position',
-        'ar_desc',
-        'en_desc',
-        'telegram',
-        'tiktok',
-        'snapchat',
-        'facebook',
-        'twitter',
-        'instagram',
-        'youtube',
-        'phone',
-        'email',
-        'address',
-    ];
+    use HasFactory,Translatable;
+
+    public $translatedAttributes = ['title', 'description'];
+
+    protected $fillable = ['image', 'linkVideo', 'position'];
+
+    public function translations(): HasMany
+    {
+        return $this->hasMany(aboutSectionTranslation::class, 'about_section_id');
+    }
+
+    public function translation(): HasOne
+    {
+        return $this->hasOne(aboutSectionTranslation::class)->where('locale', app()->getLocale());
+    }
 }

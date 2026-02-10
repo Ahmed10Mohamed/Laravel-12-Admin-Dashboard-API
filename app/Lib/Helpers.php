@@ -1,4 +1,7 @@
 <?php
+
+use App\Models\Language;
+
 function remove_invalid_charcaters($str)
     {
         return str_ireplace(['\'', '"', ',', ';', '<', '>', '?'], ' ', $str);
@@ -24,6 +27,15 @@ if (!function_exists('api')) {
     {
         return auth()->guard('api')->user();
     }
+}
+function langs()
+{
+
+    $langs = Language::isActive()
+        ->select('id', 'name', 'locale')
+        ->get();
+
+    return $langs;
 }
 if (!function_exists('lang')) {
 

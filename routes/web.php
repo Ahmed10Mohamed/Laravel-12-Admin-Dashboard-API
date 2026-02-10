@@ -2,10 +2,9 @@
 
 use App\Http\Controllers\Admin\Auth\authController;
 use App\Http\Controllers\Admin\DashboardController;
-use App\Http\Controllers\Admin\AboutSectionController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\Auth\profileController;
-
+use App\Http\Controllers\Admin\AboutSectionController;
 
 
 
@@ -33,28 +32,13 @@ Route::group(["prefix" => "/Dashboard-Admin"],function (){
         return view('errors.403'); // Create a Blade file at resources/views/errors/403.blade.php
     })->name('Error-403');
 
-
-
     Route::group(['middleware' => ['auth:admin','active']], function () {
-
-
-
 
         /*Dashboard */
         Route::get('/' , DashboardController::class)->name('Admin-Dashboard');
-        /*cats */
-
-
-
-
-
-
-
-            Route::get('About-{position}',[AboutSectionController::class,'show']);
-            Route::post('About-Section',[AboutSectionController::class,'update']);
-
-
-
+               /* About Section */
+        Route::get('About-{position}', [AboutSectionController::class, 'edit'])->name('AboutSection.edit');
+        Route::post('About-Section', [AboutSectionController::class, 'update'])->name('AboutSection.update');
 
         /*profile */
         Route::group(["prefix" => "Profile"],function (){

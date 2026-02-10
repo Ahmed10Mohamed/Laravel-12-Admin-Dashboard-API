@@ -1,0 +1,77 @@
+#!/bin/sh
+echo "==== Pre-Push Pipeline (PHPStan Level 5) ===="
+
+BRANCH=$(git rev-parse --abbrev-ref HEAD)
+
+# -------- detect diff base --------
+if git show-ref --verify --quiet refs/remotes/origin/$BRANCH; then
+  BASE="origin/$BRANCH...HEAD"
+else
+  echo "Remote branch not found — using last commit as base"
+  BASE="HEAD~1"
+fi
+
+# -------- changed PHP files only --------
+CHANGED=$(git diff --name-only --diff-filter=ACMRT $BASE \
+| grep "\.php$" \
+| grep -Ev "^(vendor/|config/|storage/framework/)")
+
+if [ -z "$CHANGED" ]; then
+  echo "No PHP changes — skipping PHPStan & Pint"
+else
+  echo "▶ Changed PHP files:"
+  echo "$CHANGED"
+
+  echo "--------------------------------------------------"
+  echo "▶ PHPStan level 5"
+  echo "$CHANGED" | xargs ./vendor/bin/phpstan analyse \
+    --level=5 \
+    --memory-limit=512M \
+    --error-format=table
+
+  if [ $? -ne 0 ]; then
+    echo "❌ PHPStan level 5 failed"
+    exit 1
+  fi
+
+  echo "--------------------------------------------------"
+  echo "▶ Pint auto-fix"
+  echo "$CHANGED" | xargs ./vendor/bin/pint
+  echo "$CHANGED" | xargs git add
+
+  echo "▶ Pint verify"
+  echo "$CHANGED" | xargs ./vendor/bin/pint --test
+  if [ $? -ne 0 ]; then
+    echo "❌ Pint still failing"
+    exit 1
+  fi
+fi
+
+echo "--------------------------------------------------"
+echo "▶ Checking pending migrations"
+if php artisan migrate:status | grep -q "Pending"; then
+  echo "❌ Pending migrations detected"
+  exit 1
+fi
+
+echo "--------------------------------------------------"
+
+# -------- PHPUnit fast mode --------
+TEST_CHANGED=$(git diff --name-only --diff-filter=ACMRT $BASE | grep "^tests/.*\.php$")
+
+if [ -n "$TEST_CHANGED" ]; then
+  echo "▶ Running changed tests"
+  echo "$TEST_CHANGED" | xargs ./vendor/bin/phpunit --stop-on-failure --colors=always
+else
+  echo "▶ Running fast PHPUnit"
+  ./vendor/bin/phpunit --stop-on-failure --exclude-group=dusk --colors=always
+fi
+
+if [ $? -ne 0 ]; then
+  echo "❌ Tests failed"
+  exit 1
+fi
+
+echo "--------------------------------------------------"
+echo "✅ All checks passed — push allowed"
+exit 0

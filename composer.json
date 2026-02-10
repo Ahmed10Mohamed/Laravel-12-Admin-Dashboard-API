@@ -10,6 +10,7 @@
     "license": "MIT",
     "require": {
         "php": "^8.2",
+        "astrotomic/laravel-translatable": "^11.16",
         "hesto/multi-auth": "^2.0",
         "laravel/framework": "^12.0",
         "laravel/passport": "^13.4",
@@ -20,6 +21,7 @@
     },
     "require-dev": {
         "fakerphp/faker": "^1.23",
+        "fruitcake/laravel-debugbar": "^4.0",
         "larastan/larastan": "^3.8",
         "laravel/dusk": "^8.3",
         "laravel/pail": "^1.2.2",
