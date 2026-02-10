@@ -25,9 +25,6 @@ Route::group(["prefix" => "/Dashboard-Admin"],function (){
     Route::get('404', function () {
         return view('errors.404'); // Create a Blade file at resources/views/errors/404.blade.php
     })->name('Error-404');
-    Route::get('405', function () {
-        return view('errors.405'); // Create a Blade file at resources/views/errors/405.blade.php
-    })->name('Error-405');
     Route::get('403', function () {
         return view('errors.403'); // Create a Blade file at resources/views/errors/403.blade.php
     })->name('Error-403');
