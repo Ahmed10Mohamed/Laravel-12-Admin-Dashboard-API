@@ -53,7 +53,7 @@ class loginAdminTest extends TestCase
     public function test_admin_cannot_login_with_incorrect_password(): void
     {
         $response = $this->post(route('admin.login'), [
-            'email' => $this->user->email,
+            'email' => $this->admin->email,
             'password' => 'WrongPassword!',
         ]);
 
@@ -63,10 +63,10 @@ class loginAdminTest extends TestCase
 
     public function test_admin_not_active_cannot_login(): void
     {
-        $this->user->isActive = false;
-        $this->user->save();
+        $this->admin->isActive = false;
+        $this->admin->save();
         $response = $this->post(route('admin.login'), [
-            'email' => $this->user->email,
+            'email' => $this->admin->email,
             'password' => 'Password123!',
         ]);
         $response->assertStatus(302);
@@ -75,12 +75,12 @@ class loginAdminTest extends TestCase
 
     public function test_admin_can_login_with_correct_credentials(): void
     {
-        // Create an admin user
+        // Create an admin admin
         $response = $this->post(route('admin.login'), [
-            'email' => $this->user->email,
+            'email' => $this->admin->email,
             'password' => 'Password123!',
         ]);
-        $this->assertAuthenticatedAs($this->user, 'admin');
+        $this->assertAuthenticatedAs($this->admin, 'admin');
         $response->assertRedirect(route('Admin-Dashboard'));
     }
 }
