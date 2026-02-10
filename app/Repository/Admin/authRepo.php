@@ -13,24 +13,24 @@ class authRepo
      
         if($admin === NULL)
         {
-            return redirect()->back()->with('fail',"اسم المستخدم او البريد الالكترونى غير صحيح");
+            return redirect()->back()->with('fail',translate('this user name or email not found'));
         }
         else if(!Hash::check($request->password, $admin->password))
         {
-            return redirect()->back()->with('fail',"كلمة المرور غير صحيحة");
+            return redirect()->back()->with('fail',translate('this passoword not correct'));
         }elseif(!$admin->isActive){
-            return redirect()->back()->with('fail',"هذا الحساب معطل");
+            return redirect()->back()->with('fail',translate('this account not active'));
         }
         $rememberMe = $request->rememberMe?true:false;
         Auth::guard('admin')->login($admin, $rememberMe);
-        return redirect()->route('Admin-Dashboard')->with('تم تسجيل الدخول بنجاح');
+        return redirect()->route('Admin-Dashboard')->with(translate('this account login success'));
     }
 
     public function logout($request)
     {
         $this->guard()->logout();
         // $request->session()->invalidate();
-        return redirect()->route('login')->with('تم تسجيل الخرور بنجاح');
+        return redirect()->route('login')->with(translate('logout success'));
     }
     private function guard()
     {

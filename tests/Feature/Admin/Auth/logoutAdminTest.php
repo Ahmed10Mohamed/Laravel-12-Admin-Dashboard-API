@@ -2,7 +2,7 @@
 
 namespace Tests\Feature\Admin\Auth;
 
-use App\Models\User;
+use App\Models\Admin;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Auth;
 use Tests\TestCase;
@@ -11,13 +11,13 @@ class logoutAdminTest extends TestCase
 {
     use RefreshDatabase;
 
-    protected $user;
+    protected $admin;
 
     protected function setUp(): void
     {
         parent::setUp();
 
-        $this->user = User::factory()->create();
+        $this->admin = Admin::factory()->create();
     }
 
     public function test_admin_cannot_logout_when_not_authenticated(): void
@@ -34,9 +34,9 @@ class logoutAdminTest extends TestCase
 
     public function test_admin_can_logout_success(): void
     {
-        // connect as admin user
+        // connect as admin admin
         $response = $this->post(route('admin.login'), [
-            'email' => $this->user->email,
+            'email' => $this->admin->email,
             'password' => 'Password123!',
         ]);
 
@@ -50,7 +50,7 @@ class logoutAdminTest extends TestCase
         $response->assertRedirect(route('login'));
         $this->assertFalse(Auth::guard('admin')->check());
 
-        // check that the admin user is no longer authenticated
+        // check that the admin admin is no longer authenticated
         $this->assertGuest('admin');
     }
 }

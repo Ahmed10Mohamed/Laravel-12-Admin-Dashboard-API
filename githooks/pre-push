@@ -1,9 +1,12 @@
 #!/bin/sh
-echo "==== Optimized Laravel Pre-Push Pipeline (PHPStan L5) ===="
+echo "==== Ultra-Optimized Laravel Pre-Push Pipeline with Timings ===="
+
+start_total=$(date +%s)
 
 BRANCH=$(git rev-parse --abbrev-ref HEAD)
 
 # -------- Detect base for diff --------
+start=$(date +%s)
 git show-ref --verify --quiet refs/remotes/origin/$BRANCH
 if [ $? -eq 0 ]; then
   BASE="origin/$BRANCH...HEAD"
@@ -11,56 +14,77 @@ else
   echo "Remote branch not found — using last commit as base"
   BASE="HEAD~1"
 fi
+end=$(date +%s)
+echo "⏱ Diff base detection: $((end - start))s"
 
-# -------- Changed PHP files only (skip vendor/config/storage) --------
+# -------- Changed files only (skip vendor/config/storage) --------
+start=$(date +%s)
 CHANGED=$(git diff --name-only --diff-filter=ACMRT $BASE \
-| grep "\.php$" \
 | grep -Ev "^(vendor/|config/|storage/framework/)")
+end=$(date +%s)
+echo "⏱ Changed files detection: $((end - start))s"
 
 if [ -z "$CHANGED" ]; then
-  echo "No PHP changes — skipping PHPStan & Pint checks"
+  echo "No relevant changes — skipping PHPStan & Pint"
 else
-  echo "▶ Changed PHP files:"
-  echo "$CHANGED"
+  # Filter PHP files only
+  PHP_CHANGED=$(echo "$CHANGED" | grep "\.php$" || true)
 
-  echo "--------------------------------------------------"
-  echo "▶ PHPStan level 5 (changed files)"
-  vendor/bin/phpstan analyse $CHANGED \
-    --level=5 \
-    --memory-limit=512M \
-    --error-format=table
-  if [ $? -ne 0 ]; then
-    echo "❌ PHPStan level 5 failed"
-    exit 1
-  fi
+  if [ -z "$PHP_CHANGED" ]; then
+    echo "No PHP changes — skipping PHPStan & Pint"
+  else
+    echo "▶ Changed PHP files:"
+    echo "$PHP_CHANGED"
 
-  echo "--------------------------------------------------"
-  echo "▶ Pint auto-fix"
-  vendor/bin/pint $CHANGED
-  git add $CHANGED
+    echo "--------------------------------------------------"
+    start=$(date +%s)
+    echo "▶ PHPStan level 5 (changed files)"
+    vendor/bin/phpstan analyse $PHP_CHANGED \
+      --level=5 \
+      --memory-limit=512M \
+      --error-format=table
+    if [ $? -ne 0 ]; then
+      echo "❌ PHPStan level 5 failed"
+      exit 1
+    fi
+    end=$(date +%s)
+    echo "⏱ PHPStan: $((end - start))s"
 
-  echo "▶ Pint verify"
-  vendor/bin/pint --test $CHANGED
-  if [ $? -ne 0 ]; then
-    echo "❌ Pint still failing"
-    exit 1
+    echo "--------------------------------------------------"
+    start=$(date +%s)
+    echo "▶ Pint auto-fix"
+    vendor/bin/pint $PHP_CHANGED
+    git add $PHP_CHANGED
+    end=$(date +%s)
+    echo "⏱ Pint auto-fix: $((end - start))s"
+
+    start=$(date +%s)
+    echo "▶ Pint verify"
+    vendor/bin/pint --test $PHP_CHANGED
+    if [ $? -ne 0 ]; then
+      echo "❌ Pint still failing"
+      exit 1
+    fi
+    end=$(date +%s)
+    echo "⏱ Pint verify: $((end - start))s"
   fi
 fi
 
 echo "--------------------------------------------------"
+start=$(date +%s)
 echo "▶ Checking pending migrations"
 PENDING_MIGRATIONS=$(php artisan migrate:status --quiet | grep "No")
 if [ -n "$PENDING_MIGRATIONS" ]; then
   echo "❌ Pending migrations detected — run php artisan migrate"
   exit 1
 fi
+end=$(date +%s)
+echo "⏱ Pending migrations check: $((end - start))s"
 
 echo "--------------------------------------------------"
+start=$(date +%s)
 echo "▶ Running PHPUnit (Unit & Feature tests only, excluding Dusk)"
-
-# Detect changed test files
-TEST_CHANGED=$(git diff --name-only --diff-filter=ACMRT $BASE \
-| grep "^tests/.*Test\.php$")
+TEST_CHANGED=$(echo "$CHANGED" | grep "^tests/.*Test\.php$" || true)
 
 if [ -n "$TEST_CHANGED" ]; then
   echo "▶ Running only changed tests:"
@@ -75,7 +99,11 @@ if [ $? -ne 0 ]; then
   echo "❌ Tests failed"
   exit 1
 fi
+end=$(date +%s)
+echo "⏱ PHPUnit tests: $((end - start))s"
 
+end_total=$(date +%s)
 echo "--------------------------------------------------"
 echo "✅ All checks passed — push allowed"
+echo "⏱ Total pipeline time: $((end_total - start_total))s"
 exit 0

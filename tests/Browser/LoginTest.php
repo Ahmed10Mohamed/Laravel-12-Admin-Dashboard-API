@@ -2,7 +2,7 @@
 
 namespace Tests\Browser;
 
-use App\Models\User;
+use App\Models\Admin;
 use Laravel\Dusk\Browser;
 use Tests\DuskTestCase;
 
@@ -14,7 +14,7 @@ class LoginTest extends DuskTestCase
     {
         parent::setUp();
 
-        $this->user = User::factory()->create([
+        $this->user = Admin::factory()->create([
             'password' => bcrypt('Password123!'),
         ]);
     }
@@ -26,8 +26,6 @@ class LoginTest extends DuskTestCase
         $this->browse(function (Browser $browser) use ($user) {
 
             $browser->visit(route('login'))
-                ->waitForText('احمد راغب', 15)
-
                 ->typeSlowly('email', $user->email)
                 ->type('password', 'Password123!')
 

@@ -2,7 +2,7 @@
 
 namespace Tests\Feature\Admin\Auth;
 
-use App\Models\User;
+use App\Models\Admin;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -10,13 +10,13 @@ class loginAdminTest extends TestCase
 {
     use RefreshDatabase;
 
-    protected $user;
+    protected $admin;
 
     protected function setUp(): void
     {
         parent::setUp();
 
-        $this->user = User::factory()->create();
+        $this->admin = Admin::factory()->create();
     }
 
     public function test_admin_login_screen_can_be_rendered(): void
@@ -47,7 +47,7 @@ class loginAdminTest extends TestCase
         ]);
 
         $response->assertStatus(302);
-        $response->assertSessionHas('fail', 'اسم المستخدم او البريد الالكترونى غير صحيح');
+        $response->assertSessionHas('fail', translate('this user name or email not found'));
     }
 
     public function test_admin_cannot_login_with_incorrect_password(): void
@@ -58,7 +58,7 @@ class loginAdminTest extends TestCase
         ]);
 
         $response->assertStatus(302);
-        $response->assertSessionHas('fail', 'كلمة المرور غير صحيحة');
+        $response->assertSessionHas('fail', translate('this passoword not correct'));
     }
 
     public function test_admin_not_active_cannot_login(): void
@@ -70,7 +70,7 @@ class loginAdminTest extends TestCase
             'password' => 'Password123!',
         ]);
         $response->assertStatus(302);
-        $response->assertSessionHas('fail', 'هذا الحساب معطل');
+        $response->assertSessionHas('fail', translate('this account not active'));
     }
 
     public function test_admin_can_login_with_correct_credentials(): void
